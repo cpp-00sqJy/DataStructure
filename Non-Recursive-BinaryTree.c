@@ -1,6 +1,16 @@
 ﻿#include "Non-Recursive-BinaryTree.h"
 
 
+int __Tree_IsNull(struct __NBinaryTree* __tree)
+{
+	if (__tree == NULL)
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
 void __Non_Recursion_Traversal(struct __NBinaryTree* __tree, int __Type)
 {
 	__seqStack __stack = __init_SeqStack();
@@ -20,52 +30,42 @@ void __Non_Recursion_Traversal(struct __NBinaryTree* __tree, int __Type)
 		}
 
 		__nTree->__flag = 1;
-
-		if (__Type == __DLR)
+		switch (__Type)
 		{
-			if (__nTree->__rChild != NULL)
-			{
-				__push_SeqStack(__stack, __nTree->__rChild);
-			}
-			if (__nTree->__lChild != NULL)
-			{
-				__push_SeqStack(__stack, __nTree->__lChild);
-			}
-			__push_SeqStack(__stack, __nTree);
-		}
-		else if (__Type == __LDR)
-		{
-			if (__nTree->__rChild != NULL)
-			{
-				__push_SeqStack(__stack, __nTree->__rChild);
+		case __DLR:
+			if (__Tree_IsNull(__nTree->__rChild) == 0) __push_SeqStack(__stack, __nTree->__rChild);
 
-			}
+			if (__Tree_IsNull(__nTree->__lChild) == 0) __push_SeqStack(__stack, __nTree->__lChild);
+
 			__push_SeqStack(__stack, __nTree);
 
-			if (__nTree->__lChild != NULL)
-			{
-				__push_SeqStack(__stack, __nTree->__lChild);
-			}
-		}
-		else if (__Type == __LRD)
-		{
+			break;
+
+		case __LDR:
+			if (__Tree_IsNull(__nTree->__rChild) == 0) __push_SeqStack(__stack, __nTree->__rChild);
+
 			__push_SeqStack(__stack, __nTree);
 
-			if (__nTree->__rChild != NULL)
-			{
-				__push_SeqStack(__stack, __nTree->__rChild);
-			}
+			if (__Tree_IsNull(__nTree->__lChild) == 0) __push_SeqStack(__stack, __nTree->__lChild);
 
-			if (__nTree->__lChild != NULL)
-			{
-				__push_SeqStack(__stack, __nTree->__lChild);
-			}
+			break;
+
+		case __LRD:
+
+			__push_SeqStack(__stack, __nTree);
+
+			if (__Tree_IsNull(__nTree->__rChild) == 0) __push_SeqStack(__stack, __nTree->__rChild);
+
+			if (__Tree_IsNull(__nTree->__lChild) == 0) __push_SeqStack(__stack, __nTree->__lChild);
+
+			break;
+
+		default:
+
+			break;
 		}
 
 	}
 
 	__free_SeqStack(__stack);
 }
-
-
-
